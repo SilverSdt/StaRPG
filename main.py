@@ -2,7 +2,7 @@ import pygame
 from sys import exit
 
 from engine.Case import Case
-from engine.Tile import Tile
+from engine.Map import Map
 
 
 # initialise les module de la bibliotheque
@@ -11,8 +11,15 @@ pygame.init()
 # definition de la fenetre de jeu
 screen: pygame.surface.Surface = pygame.display.set_mode((1280, 720), pygame.RESIZABLE | pygame.SCALED)
 
-white_case: Case = Case(Tile("asset/tile/grass.jpeg"), (200, 200), (1280/2, 720/2))
+white_case: Case = Case("asset/tile/grass.jpeg", False, (200, 200), (1280/2, 720/2))
+white_case.size = (50,50)
 
+liste: list = []
+for i in range(10):
+    for j in range(10):
+        liste.append(("grass", (i,j)))
+        
+map: Map = Map(liste, (10,10), (1280,720), (2, 2))
 # definition de la cloak
 cloak = pygame.time.Clock()
 
@@ -26,8 +33,9 @@ while(game_on):
         if event.type ==pygame.QUIT:
             pygame.quit()
             exit()
-            
-    screen.blit(white_case.surface, white_case.rect)
+    
+    for case in map.case_list:
+        screen.blit(case.surface, case.rect)
     
     # mise a jour de l'affichage de la fenetre de jeu
     pygame.display.update()
