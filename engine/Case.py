@@ -11,7 +11,8 @@ class Case:
     
     # <----- init ----->
     
-    def __init__(self: Case, sprite: str | None, hitbox: bool, size: tuple[float, float], position: tuple[float, float], center: bool = False) -> None:
+    def __init__(self: Case, name: str, sprite: str | None, hitbox: bool, size: tuple[float, float], position: tuple[float, float], center: bool = False) -> None:
+        self.__name: str = name
         self.__surface: surface.Surface = surface.Surface(size)
         if sprite != None:
             self.__surface = image.load(sprite)
@@ -30,6 +31,9 @@ class Case:
             self.__rect: rect.Rect = self.__surface.get_rect(x = position[0], y = position[1])
 
     # <----- getter -----> 
+    
+    @property
+    def name(self: Case) -> str: return self.__name
     
     @property
     def sprite(self: Case) -> str | None: return self.__sprite
@@ -55,11 +59,15 @@ class Case:
     @property
     def __dict__(self: Case) -> dict[str, object]:
         return {
+            "name": self.__name,
             "sprite": self.__sprite,
             "hitbox": self.__hitbox
         }
     
     # <----- setter ----->
+    
+    @name.setter
+    def name(self: Case, new_name: str) -> None: self.__name = new_name
     
     @sprite.setter
     def sprite(self: Case, new_sprite: str) -> None: self.__sprite = new_sprite
@@ -93,7 +101,7 @@ class Case:
             
     # <----- dict ----->
     
-    def save(self: Case, case_name: str) -> None:
-        with open(f"asset/case/{case_name}.json", "w+") as file:
+    def save(self: Case) -> None:
+        with open(f"data/case/{self.__name}.json", "w+") as file:
             dump(self.__dict__, file)
         

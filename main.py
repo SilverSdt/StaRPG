@@ -10,16 +10,9 @@ pygame.init()
 
 # definition de la fenetre de jeu
 screen: pygame.surface.Surface = pygame.display.set_mode((1280, 720), pygame.RESIZABLE | pygame.SCALED)
-
-white_case: Case = Case("asset/tile/grass.jpeg", False, (200, 200), (1280/2, 720/2))
-white_case.size = (50,50)
-
-liste: list = []
-for i in range(10):
-    for j in range(10):
-        liste.append(("grass", (i,j)))
         
-map: Map = Map(liste, (10,10), (1280,720), (2, 2))
+map: Map = Map.load("grass test map", (1280,720))
+
 # definition de la cloak
 cloak = pygame.time.Clock()
 
