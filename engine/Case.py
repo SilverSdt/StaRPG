@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 from pygame import surface, rect, image, transform
-from json import dump
+from pygame.color import Color
+from json import dump, load
 
 # <========== class ==========>
 
@@ -11,19 +12,24 @@ class Case:
     
     # <----- init ----->
     
-    def __init__(self: Case, name: str, sprite: str | None, hitbox: bool, size: tuple[float, float], position: tuple[float, float], center: bool = False) -> None:
+    def __init__(self: Case, name: str, sprite: str | None, hitbox: bool, size: tuple[float, float], position: tuple[float, float], center: bool = False, color: Color | None = None) -> None:
         self.__name: str = name
         self.__surface: surface.Surface = surface.Surface(size)
-        if sprite != None:
+        self.__sprite: str | None = None
+        if isinstance(sprite, str):
             self.__surface = image.load(sprite)
             self.__surface = transform.scale(self.__surface, size = size)
+            self.__sprite = sprite
+        elif isinstance(sprite, Color):
+            self.__surface.fill(sprite)
         
         
-        self.__sprite: str | None = sprite
         self.__hitbox: bool = hitbox
         self.__center: bool = center
         self.__size: tuple[float, float] = size
         self.__position: tuple[float, float] = position
+        self.__color: Color | None = color
+        if isinstance(color, Color): self.__surface.fill(color)
         
         if center:
             self.__rect: rect.Rect = self.__surface.get_rect(center = position)
@@ -57,11 +63,15 @@ class Case:
     def size(self: Case) -> tuple[float, float]: return self.__size
     
     @property
+    def color(self: Case) -> Color | None: return self.__color
+    
+    @property
     def __dict__(self: Case) -> dict[str, object]:
         return {
             "name": self.__name,
             "sprite": self.__sprite,
-            "hitbox": self.__hitbox
+            "hitbox": self.__hitbox,
+            "color": ([self.__color.r, self.__color.g, self.__color.b, self.__color.a]if isinstance(self.__color, Color) else None)
         }
     
     # <----- setter ----->
@@ -99,9 +109,23 @@ class Case:
         else:
             self.__rect: rect.Rect = self.__surface.get_rect(x = self.position[0], y = self.position[1])
             
-    # <----- dict ----->
+    @color.setter
+    def color(self: Case, new_color: Color) -> None:
+        self.__color = new_color
+        self.__surface.fill(new_color)
+            
+    # <----- save ----->
     
     def save(self: Case) -> None:
         with open(f"data/case/{self.__name}.json", "w+") as file:
             dump(self.__dict__, file)
+            
+    # <----- load ----->
+    
+    @staticmethod
+    def load(case_name: str, size: tuple[float, float], position: tuple[float, float], center: bool = False) -> Case:
+        with open(f"data/case/{case_name}.json", "r") as file:
+            data: dict = load(file)
+            return Case(data["name"], data["sprite"], data["hitbox"], size, position, center, (Color(data["color"][0], data["color"][1], data["color"][2], data["color"][3]) if isinstance(data["color"], list) else None))
+        
         
