@@ -12,24 +12,24 @@ class Case:
     
     # <----- init ----->
     
-    def __init__(self: Case, name: str, sprite: str | None, hitbox: bool, size: tuple[float, float], position: tuple[float, float], center: bool = False, color: Color | None = None) -> None:
+    def __init__(self: Case, name: str, sprite: str | None, hitbox: bool, size: tuple[float, float], position: tuple[float, float], center: bool = False, color: Color | tuple[int,int,int] | tuple[int,int,int, int] | None = None) -> None:
         self.__name: str = name
+        self.__sprite: str | None = sprite
+        self.__hitbox: bool = hitbox
+        self.__center: bool = center
+        self.__color: Color | tuple[int,int,int] | tuple[int,int,int, int] | None = color
+        
+        
         self.__surface: surface.Surface = surface.Surface(size)
-        self.__sprite: str | None = None
         if isinstance(sprite, str):
             self.__surface = image.load(sprite)
             self.__surface = transform.scale(self.__surface, size = size)
-            self.__sprite = sprite
-        elif isinstance(sprite, Color):
-            self.__surface.fill(sprite)
+            
         
-        
-        self.__hitbox: bool = hitbox
-        self.__center: bool = center
-        self.__size: tuple[float, float] = size
-        self.__position: tuple[float, float] = position
-        self.__color: Color | None = color
         if isinstance(color, Color): self.__surface.fill(color)
+        elif isinstance(color, tuple):
+            if len(color) == 4: self.__surface.fill(Color(color[0], color[1], color[2], color[3]))
+            else: self.__surface.fill(Color(color[0],color[1],color[2]))
         
         if center:
             self.__rect: rect.Rect = self.__surface.get_rect(center = position)
@@ -51,7 +51,9 @@ class Case:
     def surface(self: Case) -> surface.Surface: return self.__surface
     
     @property
-    def position(self: Case) -> tuple[float, float]: return self.__position
+    def position(self: Case) -> tuple[float, float]:
+        if self.__center: return self.__rect.center
+        else: return (self.__rect.left, self.__rect.top)
     
     @property
     def rect(self: Case) -> rect.Rect: return self.__rect
@@ -60,10 +62,10 @@ class Case:
     def center(self: Case) -> bool: return self.__center
     
     @property
-    def size(self: Case) -> tuple[float, float]: return self.__size
+    def size(self: Case) -> tuple[float, float]: return self.__rect.size
     
     @property
-    def color(self: Case) -> Color | None: return self.__color
+    def color(self: Case) -> Color | tuple[int,int,int] | tuple[int,int,int, int] | None: return self.__color
     
     @property
     def __dict__(self: Case) -> dict[str, object]:
@@ -80,8 +82,13 @@ class Case:
     def name(self: Case, new_name: str) -> None: self.__name = new_name
     
     @sprite.setter
-    def sprite(self: Case, new_sprite: str) -> None: self.__sprite = new_sprite
-    
+    def sprite(self: Case, new_sprite: str) -> None:
+        self.__sprite = new_sprite
+        self.__surface = image.load(self.__sprite)
+        self.__surface = transform.scale(self.__surface, size = self.size)
+        if self.__center: self.__rect = self.__surface.get_rect(center = self.position)
+        else: self.__rect = self.__surface.get_rect(x = self.position[0], y = self.position[1])
+        
     @hitbox.setter
     def hitbox(self: Case, new_hitbox: bool) -> None: self.__hitbox = new_hitbox
     
@@ -90,29 +97,23 @@ class Case:
     
     @position.setter
     def position(self: Case, new_position: tuple[float, float]) -> None:
-        self.__position = new_position
-        if self.center:
-            self.__rect: rect.Rect = self.__surface.get_rect(center = new_position)
-        else:
-            self.__rect: rect.Rect = self.__surface.get_rect(position = new_position)
+        if self.__center: self.__rect = self.__surface.get_rect(center = new_position)
+        else: self.__rect = self.__surface.get_rect(x = new_position[0], y = new_position[1])
             
     @size.setter
     def size(self: Case, new_size: tuple[float, float]) -> None:
-        self.__size = new_size
+        if self.sprite != None: self.__surface = transform.scale(self.__surface, size = self.size)
         
-        if self.sprite != None:
-            self.__surface = image.load(self.sprite)
-            self.__surface = transform.scale(self.__surface, size = self.size)
-            
-        if self.center:
-            self.__rect: rect.Rect = self.__surface.get_rect(center = self.position)
-        else:
-            self.__rect: rect.Rect = self.__surface.get_rect(x = self.position[0], y = self.position[1])
+        if self.__center: self.__rect = self.__surface.get_rect(center = self.position)
+        else: self.__rect = self.__surface.get_rect(x = self.position[0], y = self.position[1])
             
     @color.setter
-    def color(self: Case, new_color: Color) -> None:
+    def color(self: Case, new_color: Color |tuple[int,int,int] | tuple[int,int,int, int]) -> None:
         self.__color = new_color
-        self.__surface.fill(new_color)
+        if isinstance(new_color, Color): self.__surface.fill(new_color)
+        elif isinstance(new_color, tuple):
+            if len(new_color) == 4: self.__surface.fill(Color(new_color[0], new_color[1], new_color[2], new_color[3]))
+            else: self.__surface.fill(Color(new_color[0], new_color[1], new_color[2]))
             
     # <----- save ----->
     

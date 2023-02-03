@@ -19,6 +19,7 @@ class Map:
         self.__case_on_screen: tuple[int, int] = case_on_screen
         self.__case_list: list[Case] = []
         
+        
         for case in case_list:
             with open(f"data/case/{case[0]}.json", "r") as file:
                 data: dict = load(file)
@@ -94,8 +95,4 @@ class Map:
     def load(map_name: str, screen_size: tuple[int, int]) -> Map:
         with open(f"data/map/{map_name}.json", "r") as file:
             data: dict = load(file)
-            return Map( data["name"], [(case[0], case[1]) for case in data["case_list"]], data["grid_size"], screen_size, data["case_on_screen"])
-        
-    
-
-
+            return Map(data["name"], [(case[0], case[1]) for case in data["case_list"]], data["grid_size"], screen_size, data["case_on_screen"])
