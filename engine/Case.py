@@ -1,10 +1,13 @@
 # <========== import ==========>
 
 from __future__ import annotations
+from json import dump, load
+
+# <========== Local Import ==========>
 
 from pygame import surface, rect, image, transform
 from pygame.color import Color
-from json import dump, load
+
 
 # <========== class ==========>
 
