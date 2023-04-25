@@ -9,10 +9,24 @@ from json import dump, load
 # <========== class ==========>
 
 class Case:
+    """ The game is compose of a multiple number of case on a map
+    """
     
     # <----- init ----->
     
-    def __init__(self: Case, name: str, sprite: str | None, hitbox: bool, size: tuple[float, float], position: tuple[float, float], center: bool = False, color: Color | tuple[int,int,int] | tuple[int,int,int, int] | None = None) -> None:
+    def __init__(self: Case, name: str, sprite: str | None, hitbox: bool, size: tuple[float, float], position: tuple[float, float], center: bool = False, color: Color | tuple[int,int,int] | tuple[int,int,int,int] | None = None) -> None:
+        """The constructor.        
+
+        Args:
+            self (Case): self
+            name (str): The case have a name to use for saving and loading.
+            sprite (str | None): The case can have a sprite (the path to the sprite) or not if you just want a case with color for exemple.
+            hitbox (bool): If the case have a hitbox or not.
+            size (tuple[float, float]): Size of the case.
+            position (tuple[float, float]): Position of the case on the map.
+            center (bool, optional): Using if when you place the case, the position referer to the center of the case. Defaults to False.
+            color (Color | tuple[int,int,int] | tuple[int,int,int,int] | None, optional): The color of the case. Defaults to None.
+        """
         self.__name: str = name
         self.__sprite: str | None = sprite
         self.__hitbox: bool = hitbox
@@ -118,6 +132,13 @@ class Case:
     # <----- save ----->
     
     def save(self: Case) -> None:
+        """Save the case with json format.
+        The file will be in 'data/case/{case_name}.json'.
+        Only name, sprite, hitbox and color is save.
+
+        Args:
+            self (Case): self
+        """
         with open(f"data/case/{self.__name}.json", "w+") as file:
             dump(self.__dict__, file)
             
@@ -125,6 +146,17 @@ class Case:
     
     @staticmethod
     def load(case_name: str, size: tuple[float, float], position: tuple[float, float], center: bool = False) -> Case:
+        """Load a json file in 'data/case{case_name}.json'
+
+        Args:
+            case_name (str): The case name
+            size (tuple[float, float]): The size of the case.
+            position (tuple[float, float]): The position of the case on the map.
+            center (bool, optional): If position references the center of the case. Defaults to False.
+
+        Returns:
+            Case: the loaded case
+        """
         with open(f"data/case/{case_name}.json", "r") as file:
             data: dict = load(file)
             return Case(data["name"], data["sprite"], data["hitbox"], size, position, center, (Color(data["color"][0], data["color"][1], data["color"][2], data["color"][3]) if isinstance(data["color"], list) else None))
