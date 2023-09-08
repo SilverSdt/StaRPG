@@ -28,6 +28,10 @@ while(game_on):
             pygame.quit()
             exit()
 
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]: mario.position = (mario.position[0] - 5, mario.position[1])
+    if keys[pygame.K_RIGHT]: mario.position = (mario.position[0] + 5, mario.position[1])
+
     for case in map.case_list:
         screen.blit(case.surface, case.rect)
     screen.blit(mario.surface, mario.rect)
