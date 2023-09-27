@@ -1,43 +1,44 @@
+from random import randint
+
 import pygame
-from sys import exit
 
-from engine.Map import Map
+from engine.Animation import Animation
 from engine.Entity import Entity
+from engine.SpriteSheet import SpriteSheet
 
+fenetre = pygame.display.set_mode((1920, 1080))
 
-# initialise les module de la bibliotheque
 pygame.init()
+clock = pygame.time.Clock()
 
-# definition de la fenetre de jeu
-screen: pygame.surface.Surface = pygame.display.set_mode((1280, 720), pygame.RESIZABLE | pygame.SCALED)
+animations: list[Animation] = [
+    Animation((0, 0, 64, 64), [(64, 0, 64, 64), (128, 0, 64, 64), (192, 0, 64, 64), (0, 0, 64, 64)], pygame.K_DOWN),
+    Animation((0, 64, 64, 64), [(64, 64, 64, 64), (128, 64, 64, 64), (192, 64, 64, 64), (0, 64, 64, 64)], pygame.K_LEFT),
+    Animation((0, 128, 64, 64), [(64, 128, 64, 64), (128, 128, 64, 64), (192, 128, 64, 64), (0, 128, 64, 64)], pygame.K_RIGHT),
+    Animation((0, 192, 64, 64), [(64, 192, 64, 64), (128, 192, 64, 64), (192, 192, 64, 64), (0, 192, 64, 64)], pygame.K_UP)
+]
+ss = SpriteSheet('assets/spritesheet/spritesheet.png', animations)
+red: Entity = Entity("Red", (920, 540), ss)
 
-map: Map = Map.load("grass test map", (1280,720))
-mario: Entity = Entity("mario", "asset/entity/mario.png", (400,400), (1280/2, 720/2), True)
+background = (255, 255, 255)
 
-# definition de la cloak
-cloak = pygame.time.Clock()
-
-# game loop
-game_on = True
-while(game_on):
-
-    # boucle pour les events du jeu
+loop = True
+while loop:
     for event in pygame.event.get():
-        # event pour quitter le jeu
-        if event.type ==pygame.QUIT:
-            pygame.quit()
-            exit()
+        if event.type == pygame.QUIT:
+            loop = False
+
+    fenetre.fill(background)
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]: mario.position = (mario.position[0] - 5, mario.position[1])
-    if keys[pygame.K_RIGHT]: mario.position = (mario.position[0] + 5, mario.position[1])
+    fenetre.blit(red.sprite_sheet.next(keys), red.position)
 
-    for case in map.case_list:
-        screen.blit(case.surface, case.rect)
-    screen.blit(mario.surface, mario.rect)
+    if keys[pygame.K_LEFT]: red.position = (red.position[0] - 10, red.position[1])
+    if keys[pygame.K_RIGHT]: red.position = (red.position[0] + 10, red.position[1])
+    if keys[pygame.K_DOWN]: red.position = (red.position[0], red.position[1] + 10)
+    if keys[pygame.K_UP]: red.position = (red.position[0], red.position[1] - 10)
+    if keys[pygame.K_a]: red.position = (randint(0,1920), randint(0,1080))
 
-    # mise a jour de l'affichage de la fenetre de jeu
-    pygame.display.update()
 
-    # definition des fps
-    cloak.tick(60)
+    pygame.display.flip()
+    clock.tick(30)
