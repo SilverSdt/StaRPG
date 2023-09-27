@@ -1,9 +1,16 @@
 # StaRPG
 
 
-## Description 
+## Description
 
-StaRPG is a Python project that aims to create a graphics library based on the PyGame engine. StaRPG is easy and flexible to use
+StaRPG is a Python project that aims to create a graphics library based on the PyGame engine but more accessible while maintaining maximum flexibility
+
+## Featuring (eventually)
+- Map creation & gestion
+- Spritesheet gestion
+- Animations
+- Menu & Popup
+- Triggers / Actions
 
 ## Requirements
 
@@ -11,4 +18,5 @@ Check requirement.txt at root
 
 ## Plateform
 
-Currently developed on Windows
+Currently developed on Windows 11
+Python works  on Windows, macOS, Linuxs
