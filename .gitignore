@@ -9,6 +9,7 @@ engine/__pycache__
 
 # Distribution / packaging
 .Python
+.vs
 build/
 develop-eggs/
 dist/
