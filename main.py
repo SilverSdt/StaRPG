@@ -11,11 +11,12 @@ fenetre = pygame.display.set_mode((1920, 1080))
 pygame.init()
 clock = pygame.time.Clock()
 
+tick: int = 5
 animations: list[Animation] = [
-    Animation((0, 0, 64, 64), [(64, 0, 64, 64), (128, 0, 64, 64), (192, 0, 64, 64), (0, 0, 64, 64)], pygame.K_DOWN),
-    Animation((0, 64, 64, 64), [(64, 64, 64, 64), (128, 64, 64, 64), (192, 64, 64, 64), (0, 64, 64, 64)], pygame.K_LEFT),
-    Animation((0, 128, 64, 64), [(64, 128, 64, 64), (128, 128, 64, 64), (192, 128, 64, 64), (0, 128, 64, 64)], pygame.K_RIGHT),
-    Animation((0, 192, 64, 64), [(64, 192, 64, 64), (128, 192, 64, 64), (192, 192, 64, 64), (0, 192, 64, 64)], pygame.K_UP)
+    Animation((0, 0, 64, 64), [(64, 0, 64, 64, tick), (128, 0, 64, 64, tick), (192, 0, 64, 64, tick), (0, 0, 64, 64, tick)], pygame.K_DOWN),
+    Animation((0, 64, 64, 64), [(64, 64, 64, 64, tick), (128, 64, 64, 64, tick), (192, 64, 64, 64, tick), (0, 64, 64, 64, tick)], pygame.K_LEFT),
+    Animation((0, 128, 64, 64), [(64, 128, 64, 64, tick), (128, 128, 64, 64, tick), (192, 128, 64, 64, tick), (0, 128, 64, 64, tick)], pygame.K_RIGHT),
+    Animation((0, 192, 64, 64), [(64, 192, 64, 64, tick), (128, 192, 64, 64, tick), (192, 192, 64, 64, tick), (0, 192, 64, 64, tick)], pygame.K_UP)
 ]
 ss = SpriteSheet('assets/spritesheet/spritesheet.png', animations)
 red: Entity = Entity("Red", (920, 540), ss)
@@ -41,4 +42,4 @@ while loop:
 
 
     pygame.display.flip()
-    clock.tick(30)
+    clock.tick(60)
