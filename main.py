@@ -52,8 +52,6 @@ while loop:
     else:
         key = None
 
-    print(key)
-
     fenetre.blit(red.sprite_sheet.next(key), red.position)
 
 
