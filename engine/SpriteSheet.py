@@ -24,11 +24,17 @@ class SpriteSheet:
 
         return image
 
-    def next(self: SpriteSheet, keys: Sequence[bool]) -> pygame.surface.Surface:
-        if True in keys:
+    def next(self: SpriteSheet, key: int | None) -> pygame.surface.Surface:
+        if key != None:
             for animation in self.animations:
-                if animation.state == True and ((animation.trigger != None and keys[animation.trigger]) or animation.trigger == None):
+                if animation.state == True and ((animation.trigger != None and key == animation.trigger) or animation.trigger == None):
                     self.initial_state = animation.initial_stance
+
+                    for anim in self.animations:
+                        if anim != animation:
+                            anim.state = False
+
                     return self.image_at(next(animation))
 
+        for animation in self.animations: animation.state = True
         return self.image_at(self.initial_state)

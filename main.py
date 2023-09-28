@@ -12,6 +12,8 @@ pygame.init()
 clock = pygame.time.Clock()
 
 tick: int = 5
+speed: int = 10
+
 animations: list[Animation] = [
     Animation((0, 0, 64, 64), [(64, 0, 64, 64, tick), (128, 0, 64, 64, tick), (192, 0, 64, 64, tick), (0, 0, 64, 64, tick)], pygame.K_DOWN),
     Animation((0, 64, 64, 64), [(64, 64, 64, 64, tick), (128, 64, 64, 64, tick), (192, 64, 64, 64, tick), (0, 64, 64, 64, tick)], pygame.K_LEFT),
@@ -22,23 +24,37 @@ ss = SpriteSheet('assets/spritesheet/spritesheet.png', animations)
 red: Entity = Entity("Red", (920, 540), ss)
 
 background = (255, 255, 255)
-
 loop = True
+key: int | None = None
+
 while loop:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             loop = False
+        if event.type == pygame.KEYDOWN:
+            pass
 
     fenetre.fill(background)
 
     keys = pygame.key.get_pressed()
-    fenetre.blit(red.sprite_sheet.next(keys), red.position)
+    if keys[pygame.K_LEFT] and (key == None or key == pygame.K_LEFT):
+        red.position = (red.position[0] - speed, red.position[1])
+        key = pygame.K_LEFT
+    elif keys[pygame.K_RIGHT] and (key == None or key == pygame.K_RIGHT):
+        red.position = (red.position[0] + speed, red.position[1])
+        key = pygame.K_RIGHT
+    elif keys[pygame.K_DOWN] and (key == None or key == pygame.K_DOWN):
+        red.position = (red.position[0], red.position[1] + speed)
+        key = pygame.K_DOWN
+    elif keys[pygame.K_UP] and (key == None or key == pygame.K_UP):
+        red.position = (red.position[0], red.position[1] - speed)
+        key = pygame.K_UP
+    else:
+        key = None
 
-    if keys[pygame.K_LEFT]: red.position = (red.position[0] - 10, red.position[1])
-    if keys[pygame.K_RIGHT]: red.position = (red.position[0] + 10, red.position[1])
-    if keys[pygame.K_DOWN]: red.position = (red.position[0], red.position[1] + 10)
-    if keys[pygame.K_UP]: red.position = (red.position[0], red.position[1] - 10)
-    if keys[pygame.K_a]: red.position = (randint(0,1920), randint(0,1080))
+    print(key)
+
+    fenetre.blit(red.sprite_sheet.next(key), red.position)
 
 
     pygame.display.flip()
