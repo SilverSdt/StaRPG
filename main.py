@@ -1,7 +1,7 @@
 import pygame
 import MovableCharacter
 
-fenetre = pygame.display.set_mode((1920, 1080))
+screen = pygame.display.set_mode((1920, 1080))
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -15,10 +15,10 @@ while loop:
         if event.type == pygame.KEYDOWN:
             pass
 
-    fenetre.fill(background)
+    screen.fill(background)
 
     keys = pygame.key.get_pressed()
-    MovableCharacter.control.__call__(fenetre, keys)
+    MovableCharacter.control.__call__(screen, keys)
 
 
     pygame.display.flip()
