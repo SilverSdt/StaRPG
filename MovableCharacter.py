@@ -21,7 +21,7 @@ variables: dict[str, Any] = {
     "key": None
 }
 
-def func(fenetre: pygame.surface.Surface, entity: Entity, keys: Sequence[bool], key: int | None) -> None:
+def func(entity: Entity, fenetre: pygame.surface.Surface, keys: Sequence[bool], key: int | None) -> None:
     if keys[pygame.K_LEFT] and (key == None or key == pygame.K_LEFT):
         entity.position = (entity.position[0] - entity.speed, entity.position[1])
         key = pygame.K_LEFT
