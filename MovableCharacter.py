@@ -18,10 +18,11 @@ ss = SpriteSheet('assets/spritesheet/spritesheet.png', animations)
 red: Entity = Entity("Red", (920, 540), ss, 5)
 
 variables: dict[str, Any] = {
-    "key": None
+    "key": None,
+    "entity": red,
 }
 
-def func(entity: Entity, screen: pygame.surface.Surface, keys: Sequence[bool], key: int | None) -> None:
+def func(fenetre: pygame.surface.Surface,keys: Sequence[bool], key: int | None, entity: Entity,) -> None:
     if keys[pygame.K_LEFT] and (key == None or key == pygame.K_LEFT):
         entity.position = (entity.position[0] - entity.speed, entity.position[1])
         key = pygame.K_LEFT
@@ -37,6 +38,6 @@ def func(entity: Entity, screen: pygame.surface.Surface, keys: Sequence[bool], k
     else:
         key = None
 
-    screen.blit(control.entity.sprite_sheet.next(key), control.entity.position)
+    fenetre.blit(entity.sprite_sheet.next(key), entity.position)
 
 control: Control = Control(red, func, variables)
