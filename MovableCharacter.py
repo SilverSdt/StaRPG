@@ -22,7 +22,7 @@ variables: dict[str, Any] = {
     "entity": red,
 }
 
-def func(fenetre: pygame.surface.Surface,keys: Sequence[bool], key: int | None, entity: Entity,) -> None:
+def func(fenetre: pygame.surface.Surface, keys: Sequence[bool], key: int | None, entity: Entity,) -> None:
     if keys[pygame.K_LEFT] and (key == None or key == pygame.K_LEFT):
         entity.position = (entity.position[0] - entity.speed, entity.position[1])
         key = pygame.K_LEFT
@@ -40,4 +40,4 @@ def func(fenetre: pygame.surface.Surface,keys: Sequence[bool], key: int | None, 
 
     fenetre.blit(entity.sprite_sheet.next(key), entity.position)
 
-control: Control = Control(red, func, variables)
+control: Control = Control(func, variables)

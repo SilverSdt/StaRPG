@@ -7,7 +7,7 @@ import pygame
 
 class Control:
 
-    def __init__(self: Control, entity: Entity, func: Callable, variables: dict[str, Any]) -> None:
+    def __init__(self: Control, func: Callable, variables: dict[str, Any]) -> None:
         self.func: Callable = func
         self.variables: dict[str, Any] = variables
 
