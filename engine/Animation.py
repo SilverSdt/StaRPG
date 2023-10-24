@@ -1,5 +1,8 @@
+# <========== Import ==========>
+
 from __future__ import annotations
 
+# <========== Class ==========>
 class Animation:
 
     def __init__(self: Animation, initial_stance: tuple[int, int, int, int], animation_loop: list[tuple[int, int, int, int, int]], trigger: int) -> None:

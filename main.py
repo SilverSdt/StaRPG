@@ -12,8 +12,6 @@ while loop:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             loop = False
-        if event.type == pygame.KEYDOWN:
-            pass
 
     screen.fill(background)
 

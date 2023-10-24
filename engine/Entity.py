@@ -1,6 +1,12 @@
+# <========== Import ==========>
+
 from __future__ import annotations
 
+# <========== Local Import ==========>
+
 from engine.SpriteSheet import SpriteSheet
+
+# <========== Class ==========>
 
 class Entity:
 

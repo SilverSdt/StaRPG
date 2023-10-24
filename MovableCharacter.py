@@ -14,7 +14,7 @@ animations: list[Animation] = [
     Animation((0, 128, 64, 64), [(64, 128, 64, 64, tick), (128, 128, 64, 64, tick), (192, 128, 64, 64, tick), (0, 128, 64, 64, tick)], pygame.K_RIGHT),
     Animation((0, 192, 64, 64), [(64, 192, 64, 64, tick), (128, 192, 64, 64, tick), (192, 192, 64, 64, tick), (0, 192, 64, 64, tick)], pygame.K_UP)
 ]
-ss = SpriteSheet('assets/spritesheet/spritesheet.png', animations)
+ss = SpriteSheet('assets/spritesheet/spritesheet.png', (0 ,0 , 64, 64), animations)
 red: Entity = Entity("Red", (920, 540), ss, 5)
 
 variables: dict[str, Any] = {

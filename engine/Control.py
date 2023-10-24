@@ -1,9 +1,9 @@
-from __future__ import annotations
+# <========== Import ==========>
 
+from __future__ import annotations
 from typing import  Any, Callable
 
-from engine.Entity import Entity
-import pygame
+# <========== Class ==========>
 
 class Control:
 
