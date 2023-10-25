@@ -15,7 +15,7 @@ animations: list[Animation] = [
     Animation((0, 192, 64, 64), [(64, 192, 64, 64, tick), (128, 192, 64, 64, tick), (192, 192, 64, 64, tick), (0, 192, 64, 64, tick)], pygame.K_UP)
 ]
 ss = SpriteSheet('assets/spritesheet/spritesheet.png', (0 ,0 , 64, 64), animations)
-red: Entity = Entity("Red", (920, 540), ss, 5)
+red: Entity = Entity("Red", (920, 540), ss, (100, 100), 5)
 
 variables: dict[str, Any] = {
     "key": None,
@@ -38,6 +38,8 @@ def func(fenetre: pygame.surface.Surface, keys: Sequence[bool], key: int | None,
     else:
         key = None
 
-    fenetre.blit(entity.sprite_sheet.next(key), entity.position)
+    sprite: pygame.surface.Surface = entity.sprite_sheet.next(key)
+    sprite = pygame.transform.scale(sprite, entity.size)
+    fenetre.blit(sprite, entity.position)
 
 control: Control = Control(func, variables)
