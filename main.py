@@ -2,17 +2,22 @@ import pygame
 import MovableCharacter
 
 from engine.Case import Case
-from engine.SpriteSheet import SpriteSheet
+from engine.Map import Map
 
-screen = pygame.display.set_mode((1920, 1080))
+screen: pygame.surface.Surface = pygame.display.set_mode((1920, 1080))
 
 pygame.init()
 clock = pygame.time.Clock()
 background = (255, 255, 255)
 loop = True
 
-ss = SpriteSheet('assets/spritesheet/spritesheet.png', (0 ,0 , 64, 64))
-c: Case = Case((1920/2, 1080/2), (64, 64), ss.image_at((0, 0, 64, 64)), True)
+cases: list[Case] = []
+for i in range(0, 1920, 64):
+    for j in range(0, 1080, 64):
+        if (i + j) % 128 == 0:
+            cases.append(Case((i, j), (64, 64), (0,0,0), False))
+
+m: Map = Map("test field", cases)
 
 while loop:
     for event in pygame.event.get():
@@ -21,7 +26,7 @@ while loop:
 
     screen.fill(background)
 
-    screen.blit(c.surface, c.location)
+    m.blit(screen)
 
     keys = pygame.key.get_pressed()
     MovableCharacter.control.__call__(screen, keys)
