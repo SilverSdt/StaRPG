@@ -1,13 +1,10 @@
 import pygame
 import MovableCharacter
 
-from engine.Case import Case
-from engine.Map import Map
-
-
 screen: pygame.surface.Surface = pygame.display.set_mode((1920, 1080))
 canvas: pygame.surface.Surface = pygame.display.set_mode((1920, 1080))
 
+screen.fill((0, 0, 0))
 canvas.fill((255, 255, 255))
 
 pygame.init()
