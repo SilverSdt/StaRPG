@@ -7,7 +7,7 @@ import pygame
 
 class Case:
 
-    def __init__(self: Case, location: tuple[float, float], size: tuple[float, float], sprite: pygame.surface.Surface | pygame.color.Color | tuple[int, int, int], hitbox: bool):
+    def __init__(self: Case, location: tuple[float, float], size: tuple[float, float], sprite: pygame.surface.Surface | pygame.color.Color | tuple[int, int, int], hitbox: bool) -> None:
         self.location: tuple[float, float] = location
         self.hitbox: bool = hitbox
 
@@ -51,6 +51,3 @@ class Case:
             return bool(pygame.rect.Rect(other_location, other_size).colliderect(sprite.rect))
         else:
             return False
-
-
-

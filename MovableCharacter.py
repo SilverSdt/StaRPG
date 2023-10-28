@@ -1,10 +1,13 @@
+import pygame
 from typing import Any, Sequence
 
 from engine.Animation import Animation
-from engine.Control import Control
 from engine.Entity import Entity
 from engine.SpriteSheet import SpriteSheet
-import pygame
+
+from CreateCamera import camera
+from CreateMap import m
+
 
 
 tick: int = 5
@@ -15,31 +18,31 @@ animations: list[Animation] = [
     Animation((0, 192, 64, 64), [(64, 192, 64, 64, tick), (128, 192, 64, 64, tick), (192, 192, 64, 64, tick), (0, 192, 64, 64, tick)], pygame.K_UP)
 ]
 ss = SpriteSheet('assets/spritesheet/spritesheet.png', (0 ,0 , 64, 64), animations)
-red: Entity = Entity("Red", (920, 540), ss, (100, 100), 5)
+mc: Entity = Entity("Red", (928, 508), ss, (100, 100), 5)
 
-variables: dict[str, Any] = {
-    "key": None,
-    "entity": red,
-}
+key: int | None = None
 
-def func(fenetre: pygame.surface.Surface, keys: Sequence[bool], key: int | None, entity: Entity) -> None:
+def move(canvas: pygame.surface.Surface, keys: Sequence[bool]) -> None:
+    global key
+
     if keys[pygame.K_LEFT] and (key == None or key == pygame.K_LEFT):
-        entity.position = (entity.position[0] - entity.speed, entity.position[1])
+        if mc.position[0] - mc.speed > 0: mc.position = (mc.position[0] - mc.speed, mc.position[1])
         key = pygame.K_LEFT
     elif keys[pygame.K_RIGHT] and (key == None or key == pygame.K_RIGHT):
-        entity.position = (entity.position[0] + entity.speed, entity.position[1])
+        if mc.position[0] + mc.speed + mc.size[0] < canvas.get_size()[0] :mc.position = (mc.position[0] + mc.speed, mc.position[1])
         key = pygame.K_RIGHT
     elif keys[pygame.K_DOWN] and (key == None or key == pygame.K_DOWN):
-        entity.position = (entity.position[0], entity.position[1] + entity.speed)
+        if mc.position[1] + mc.speed + mc.size[1] < canvas.get_size()[1]: mc.position = (mc.position[0], mc.position[1] + mc.speed)
         key = pygame.K_DOWN
     elif keys[pygame.K_UP] and (key == None or key == pygame.K_UP):
-        entity.position = (entity.position[0], entity.position[1] - entity.speed)
+        if mc.position[1] - mc.speed > 0: mc.position = (mc.position[0], mc.position[1] - mc.speed)
         key = pygame.K_UP
     else:
         key = None
 
-    sprite: pygame.surface.Surface = entity.sprite_sheet.next(key)
-    sprite = pygame.transform.scale(sprite, entity.size)
-    fenetre.blit(sprite, entity.position)
+    sprite: pygame.surface.Surface = mc.sprite_sheet.next(key)
+    sprite = pygame.transform.scale(sprite, mc.size)
 
-control: Control = Control(func, variables)
+    m.blit(canvas, (255,255,255), camera.offset)
+    canvas.blit(sprite, (mc.position[0] - camera.offset.x, mc.position[1] - camera.offset.y))
+
