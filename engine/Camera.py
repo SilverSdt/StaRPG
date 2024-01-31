@@ -40,10 +40,35 @@ class CamScroll(ABC):
 class Follow(CamScroll):
 
         def __init__(self: Follow, camera: Camera) -> None:
-            CamScroll.__init__(self, camera)
+            super().__init__(camera)
 
         def scroll(self: Follow, entity: Entity) -> None:
             self.camera.offset_float.x += (entity.position[0] - self.camera.offset_float.x - (self.camera.display_width / 2 - entity.size[0] / 2) + self.camera.CONST.x)
             self.camera.offset_float.y += (entity.position[1] - self.camera.offset_float.y - (self.camera.discplay_height / 2- entity.size[1] / 2) + self.camera.CONST.y)
             self.camera.offset.x = int(self.camera.offset_float.x)
             self.camera.offset.y = int(self.camera.offset_float.y)
+
+class BorderFollow(CamScroll):
+
+    def __init__(self: BorderFollow, camera: Camera, min: vec | tuple[int, int], max: vec | tuple[int, int]) -> None:
+        super().__init__(camera)
+        self.max: vec = max if max is vec else vec(max[0], max[1])
+        self.min: vec = min if min is vec else vec(min[0], min[1])
+
+    def scroll(self: BorderFollow, entity: Entity) -> None:
+
+
+        if entity.position[0] > self.max.x:
+            self.camera.offset_float.x += (entity.position[0] - self.camera.offset_float.x - (self.camera.display_width / 2 - entity.size[0] / 2) + self.camera.CONST.x)
+        elif entity.position[0] < self.min.x:
+            self.camera.offset_float.x += (entity.position[0] - self.camera.offset_float.x - (self.camera.display_width / 2 - entity.size[0] / 2) + self.camera.CONST.x)
+
+        self.camera.offset.x = int(self.camera.offset_float.x)
+
+        if entity.position[1] > self.max.y:
+            self.camera.offset_float.y += (entity.position[1] - self.camera.offset_float.y - (self.camera.discplay_height / 2- entity.size[1] / 2) + self.camera.CONST.y)
+        elif entity.position[1] < self.min.y:
+            self.camera.offset_float.y += (entity.position[1] - self.camera.offset_float.y - (self.camera.discplay_height / 2- entity.size[1] / 2) + self.camera.CONST.y)
+
+        self.camera.offset.y = int(self.camera.offset_float.y)
+

@@ -26,16 +26,16 @@ def move(canvas: pygame.surface.Surface, keys: Sequence[bool]) -> None:
     global key
 
     if keys[pygame.K_LEFT] and (key == None or key == pygame.K_LEFT):
-        if mc.position[0] - mc.speed > 0: mc.position = (mc.position[0] - mc.speed, mc.position[1])
+        mc.position = (mc.position[0] - mc.speed, mc.position[1])
         key = pygame.K_LEFT
     elif keys[pygame.K_RIGHT] and (key == None or key == pygame.K_RIGHT):
-        if mc.position[0] + mc.speed + mc.size[0] < canvas.get_size()[0] :mc.position = (mc.position[0] + mc.speed, mc.position[1])
+        mc.position = (mc.position[0] + mc.speed, mc.position[1])
         key = pygame.K_RIGHT
     elif keys[pygame.K_DOWN] and (key == None or key == pygame.K_DOWN):
-        if mc.position[1] + mc.speed + mc.size[1] < canvas.get_size()[1]: mc.position = (mc.position[0], mc.position[1] + mc.speed)
+        mc.position = (mc.position[0], mc.position[1] + mc.speed)
         key = pygame.K_DOWN
     elif keys[pygame.K_UP] and (key == None or key == pygame.K_UP):
-        if mc.position[1] - mc.speed > 0: mc.position = (mc.position[0], mc.position[1] - mc.speed)
+        mc.position = (mc.position[0], mc.position[1] - mc.speed)
         key = pygame.K_UP
     else:
         key = None
