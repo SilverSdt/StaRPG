@@ -14,9 +14,13 @@ StaRPG is a Python project that aims to create a graphics library based on the P
 
 ## Requirements
 
-Check requirement.txt at root
+Check [requirement.txt](requirement.txt) at root
 
 ## Plateform
 
 Currently developed on Windows 11
-Python works  on Windows, macOS, Linuxs
+
+|        | Win | Linux | MacOS |
+|--------|-----|-------|-------|
+|**Work On** |Yes  |Yes    |    Yes|
+
