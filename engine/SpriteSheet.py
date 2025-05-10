@@ -13,10 +13,8 @@ from engine.Animation import Animation
 
 class SpriteSheet:
 
-    def __init__(self: SpriteSheet, sprite_sheet_path: str, initial_state: tuple[int, int, int, int],animations: list[Animation] | None = None) -> None:
+    def __init__(self: SpriteSheet, sprite_sheet_path: str) -> None:
         self.sheet: pygame.surface.Surface = pygame.image.load(sprite_sheet_path)
-        self.animations: list[Animation] = animations.copy() if animations != None else []
-        self.initial_state: tuple[int, int, int, int] = initial_state
 
     def image_at(self: SpriteSheet, rectangle: tuple[float, float, float, float]) -> pygame.surface.Surface:
         rect: pygame.Rect = pygame.Rect(rectangle)
@@ -25,17 +23,7 @@ class SpriteSheet:
 
         return image
 
-    def next(self: SpriteSheet, key: int | None) -> pygame.surface.Surface:
-        if key != None:
-            for animation in self.animations:
-                if animation.state == True and ((animation.trigger != None and key == animation.trigger) or animation.trigger == None):
-                    self.initial_state = animation.initial_stance
+    def next(self: SpriteSheet, key: int | None, animations_dict: dict[str, Animation]) -> pygame.surface.Surface:
+        if key in animations_dict:
+                return self.image_at(next(animations_dict[key]))
 
-                    for anim in self.animations:
-                        if anim != animation:
-                            anim.state = False
-
-                    return self.image_at(next(animation))
-
-        for animation in self.animations: animation.state = True
-        return self.image_at(self.initial_state)
